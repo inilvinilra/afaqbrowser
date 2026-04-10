@@ -1,0 +1,5 @@
+[Runtime]
+name=org.afaq.browser.Locale
+
+[ExtensionOf]
+ref=app/org.afaq.browser/${ARCH}/${FLATPAK_BRANCH}

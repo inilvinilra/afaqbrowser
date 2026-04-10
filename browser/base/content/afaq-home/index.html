@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' chrome:; img-src 'self' chrome: data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action https://www.startpage.com https://duckduckgo.com https://priv.au"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Null Browser</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <img class="brandmark" src="chrome://branding/content/about-logo.svg" alt="Null Browser" />
+        <p class="eyebrow">Privacy browser</p>
+        <h1>A focused start page for controlled private browsing.</h1>
+        <p class="lede">
+          Startpage is the default engine. DuckDuckGo and PrivAU stay one click away inside Null Browser.
+        </p>
+      </section>
+
+      <section class="search-panel" aria-label="Search">
+        <form id="searchForm" class="search-form">
+          <label class="sr-only" for="searchInput">Search query</label>
+          <input id="searchInput" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search privately" />
+          <label class="sr-only" for="engineSelect">Search engine</label>
+          <select id="engineSelect" aria-label="Search engine">
+            <option value="startpage">Startpage</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+            <option value="privau">PrivAU</option>
+          </select>
+          <button type="submit">Search</button>
+        </form>
+        <div class="engine-links" aria-label="Quick engine shortcuts">
+          <a href="https://www.startpage.com/" data-engine="startpage">Startpage</a>
+          <a href="https://duckduckgo.com/" data-engine="duckduckgo">DuckDuckGo</a>
+          <a href="https://priv.au/" data-engine="privau">PrivAU</a>
+        </div>
+      </section>
+
+      <section class="actions" aria-label="Browser shortcuts">
+        <a class="action-card" href="about:preferences#privacy">
+          <span class="action-title">Privacy Settings</span>
+          <span class="action-copy">Inspect cleanup, DNS, and hardened privacy controls.</span>
+        </a>
+        <a class="action-card" href="about:preferences#search">
+          <span class="action-title">Search Engines</span>
+          <span class="action-copy">Review Startpage, DuckDuckGo, and PrivAU defaults.</span>
+        </a>
+        <a class="action-card" href="about:downloads">
+          <span class="action-title">Downloads</span>
+          <span class="action-copy">Open recent files without clutter on the start page.</span>
+        </a>
+      </section>
+    </main>
+  </body>
+</html>
