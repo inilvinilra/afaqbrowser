@@ -1,0 +1,5 @@
+. "$topsrcdir/browser/config/mozconfig"
+ac_add_options --enable-artifact-builds
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-afaq-artifact

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+command="${1:-help}"
+jobs="${AFAQ_BUILD_JOBS:-2}"
+
+case "$command" in
+  configure)
+    cp build/mozconfig.afaq-artifact .mozconfig
+    echo "Configured Afaq Browser artifact builds in .mozconfig"
+    ;;
+  configure-full)
+    cp build/mozconfig.afaq-full-dev .mozconfig
+    echo "Configured Afaq Browser full development builds in .mozconfig"
+    ;;
+  build)
+    if [ ! -f .mozconfig ]; then
+      cp build/mozconfig.afaq-artifact .mozconfig
+      echo "Configured Afaq Browser artifact builds in .mozconfig"
+    fi
+    ./mach build -j"$jobs"
+    ;;
+  build-full)
+    cp build/mozconfig.afaq-full-dev .mozconfig
+    ./mach build -j"$jobs"
+    ;;
+  faster)
+    ./mach build faster
+    ;;
+  package)
+    ./mach package
+    ;;
+  appimage)
+    tools/afaq-appimage
+    ;;
+  run)
+    ./mach run
+    ;;
+  clean)
+    ./mach clobber
+    ;;
+  audit)
+    tools/afaq-privacy-audit
+    ;;
+  help|--help|-h)
+    echo "Usage: tools/afaq-dev <configure|configure-full|build|build-full|faster|package|appimage|run|clean|audit>"
+    ;;
+  *)
+    echo "Unknown command: $command" >&2
+    echo "Usage: tools/afaq-dev <configure|configure-full|build|build-full|faster|package|appimage|run|clean|audit>" >&2
+    exit 2
+    ;;
+esac

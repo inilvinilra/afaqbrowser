@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' chrome:; img-src 'self' chrome: data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action https://www.startpage.com https://duckduckgo.com https://priv.au"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Afaq Browser</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="brand" href="about:home" aria-label="Afaq Browser Home">
+          <img src="chrome://branding/content/about-logo.svg" alt="" />
+          <span>Afaq Browser</span>
+        </a>
+        <nav class="toplinks" aria-label="Browser pages">
+          <a href="about:preferences#privacy">Privacy</a>
+          <a href="about:preferences#search">Search</a>
+          <a href="about:downloads">Downloads</a>
+        </nav>
+      </header>
+
+      <section class="search-area" aria-label="Search or address">
+        <form id="searchForm" class="search-form">
+          <label class="sr-only" for="searchInput">Search or enter address</label>
+          <input
+            id="searchInput"
+            name="q"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search or enter address"
+          />
+          <label class="sr-only" for="engineSelect">Search engine</label>
+          <select id="engineSelect" aria-label="Search engine">
+            <option value="startpage">Startpage</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+            <option value="privau">PrivAU</option>
+          </select>
+          <button type="submit">Go</button>
+        </form>
+        <div class="engine-row" aria-label="Search engines">
+          <button type="button" data-engine="startpage">Startpage</button>
+          <button type="button" data-engine="duckduckgo">DuckDuckGo</button>
+          <button type="button" data-engine="privau">PrivAU</button>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Afaq Browser start page">
+        <section class="quick-section" aria-labelledby="quickLinksHeading">
+          <div class="section-head">
+            <h1 id="quickLinksHeading">Quick access</h1>
+            <a href="about:preferences#home">Edit home</a>
+          </div>
+          <div class="quick-grid">
+            <a href="https://www.startpage.com/">
+              <span class="tile-icon">SP</span>
+              <span class="tile-label">Startpage</span>
+            </a>
+            <a href="https://duckduckgo.com/">
+              <span class="tile-icon">DG</span>
+              <span class="tile-label">DuckDuckGo</span>
+            </a>
+            <a href="https://priv.au/">
+              <span class="tile-icon">PA</span>
+              <span class="tile-label">PrivAU</span>
+            </a>
+            <a href="about:protections">
+              <span class="tile-icon">PR</span>
+              <span class="tile-label">Protections</span>
+            </a>
+            <a href="about:preferences#privacy">
+              <span class="tile-icon">HD</span>
+              <span class="tile-label">Hardening</span>
+            </a>
+            <a href="about:downloads">
+              <span class="tile-icon">DL</span>
+              <span class="tile-label">Downloads</span>
+            </a>
+          </div>
+        </section>
+
+        <aside class="side-panel" aria-label="Browser status">
+          <section class="status-panel" aria-labelledby="statusHeading">
+            <h2 id="statusHeading">Default posture</h2>
+            <dl>
+              <div>
+                <dt>Profile</dt>
+                <dd>Hardened</dd>
+              </div>
+              <div>
+                <dt>DNS</dt>
+                <dd>Mullvad</dd>
+              </div>
+              <div>
+                <dt>WebRTC</dt>
+                <dd>Disabled</dd>
+              </div>
+              <div>
+                <dt>Telemetry</dt>
+                <dd>Off</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="tools-panel" aria-labelledby="toolsHeading">
+            <h2 id="toolsHeading">Tools</h2>
+            <a href="about:preferences#privacy">Privacy settings</a>
+            <a href="about:preferences#search">Search settings</a>
+            <a href="about:addons">Extensions</a>
+            <a href="about:support">Troubleshooting</a>
+          </section>
+        </aside>
+      </section>
+    </main>
+  </body>
+</html>

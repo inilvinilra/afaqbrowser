@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+
+const root = path.resolve(__dirname, "..");
+const brandingPath = path.join(root, "browser/branding/afaq/pref/firefox-branding.js");
+const securityPath = path.join(root, "browser/modules/AfaqSecurityLevelService.sys.mjs");
+
+const branding = fs.readFileSync(brandingPath, "utf8");
+const security = fs.readFileSync(securityPath, "utf8");
+
+const falsePrefs = [
+  "app.normandy.enabled",
+  "app.shield.optoutstudies.enabled",
+  "browser.crashReports.unsubmittedCheck.autoSubmit2",
+  "browser.dataFeatureRecommendations.enabled",
+  "browser.discovery.enabled",
+  "browser.newtabpage.activity-stream.discoverystream.enabled",
+  "browser.newtabpage.activity-stream.showSponsored",
+  "browser.newtabpage.activity-stream.showSponsoredTopSites",
+  "browser.search.suggest.enabled",
+  "browser.search.suggest.enabled.private",
+  "browser.send_pings",
+  "browser.urlbar.quicksuggest.dataCollection.enabled",
+  "browser.urlbar.quicksuggest.enabled",
+  "browser.urlbar.suggest.recentsearches",
+  "browser.urlbar.suggest.searches",
+  "browser.urlbar.suggest.trending",
+  "browser.urlbar.suggest.weather",
+  "browser.urlbar.sponsoredTopSites",
+  "browser.urlbar.trending.featureGate",
+  "browser.urlbar.weather.featureGate",
+  "datareporting.healthreport.uploadEnabled",
+  "datareporting.policy.dataSubmissionEnabled",
+  "datareporting.usage.uploadEnabled",
+  "dom.private-attribution.submission.enabled",
+  "extensions.pocket.enabled",
+  "extensions.pocket.showHome",
+  "identity.fxaccounts.telemetry.clientAssociationPing.enabled",
+  "identity.fxaccounts.toolbar.pxiToolbarEnabled.relayEnabled",
+  "nimbus.telemetry.targetingContextEnabled",
+  "toolkit.telemetry.archive.enabled",
+  "toolkit.telemetry.bhrPing.enabled",
+  "toolkit.telemetry.enabled",
+  "toolkit.telemetry.firstShutdownPing.enabled",
+  "toolkit.telemetry.newProfilePing.enabled",
+  "toolkit.telemetry.shutdownPingSender.enabled",
+  "toolkit.telemetry.unified",
+  "toolkit.telemetry.updatePing.enabled",
+];
+
+const stringPrefs = {
+  "signon.firefoxRelay.feature": "disabled",
+};
+
+const failures = [];
+
+for (const pref of falsePrefs) {
+  const brandingPattern = new RegExp(`pref\\("${pref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}", false\\);`);
+  const securityPattern = new RegExp(`"${pref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}": false`, "g");
+  if (!brandingPattern.test(branding)) {
+    failures.push(`branding missing false pref: ${pref}`);
+  }
+  if ((security.match(securityPattern) || []).length < 3) {
+    failures.push(`security levels missing false pref: ${pref}`);
+  }
+}
+
+for (const [pref, value] of Object.entries(stringPrefs)) {
+  const brandingPattern = new RegExp(`pref\\("${pref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}", "${value}"\\);`);
+  const securityPattern = new RegExp(`"${pref.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}": "${value}"`, "g");
+  if (!brandingPattern.test(branding)) {
+    failures.push(`branding missing string pref: ${pref}=${value}`);
+  }
+  if ((security.match(securityPattern) || []).length < 3) {
+    failures.push(`security levels missing string pref: ${pref}=${value}`);
+  }
+}
+
+if (failures.length) {
+  console.error(failures.join("\n"));
+  process.exit(1);
+}
+
+console.log("Afaq privacy audit passed");

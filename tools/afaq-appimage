@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+DIST="${AFAQ_DIST_DIR:-$ROOT/obj-afaq-full/dist/afaq}"
+APPDIR="${AFAQ_APPDIR:-$ROOT/obj-afaq-full/appimage/AfaqBrowser.AppDir}"
+CACHE_DIR="$ROOT/tools/.cache"
+APPIMAGETOOL="${APPIMAGETOOL:-$CACHE_DIR/appimagetool-x86_64.AppImage}"
+VERSION="$(awk -F= '/^Version=/{print $2; exit}' "$DIST/application.ini")"
+OUT="${AFAQ_APPIMAGE_OUT:-$ROOT/obj-afaq-full/dist/Afaq-Browser-$VERSION-x86_64.AppImage}"
+
+if [ ! -d "$DIST" ]; then
+  echo "Missing packaged browser directory: $DIST" >&2
+  exit 1
+fi
+
+mkdir -p "$CACHE_DIR"
+
+if ! command -v appimagetool >/dev/null 2>&1 && [ ! -x "$APPIMAGETOOL" ]; then
+  curl -L --fail --output "$APPIMAGETOOL" \
+    https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+  chmod +x "$APPIMAGETOOL"
+fi
+
+rm -rf "$APPDIR"
+mkdir -p \
+  "$APPDIR/usr/bin" \
+  "$APPDIR/usr/lib/afaq-browser" \
+  "$APPDIR/usr/share/applications" \
+  "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+
+cp -a "$DIST/." "$APPDIR/usr/lib/afaq-browser/"
+cp "$ROOT/browser/branding/afaq/default256.png" "$APPDIR/afaq-browser.png"
+cp "$ROOT/browser/branding/afaq/default256.png" "$APPDIR/usr/share/icons/hicolor/256x256/apps/afaq-browser.png"
+
+cat > "$APPDIR/AppRun" <<'APPRUN'
+#!/usr/bin/env bash
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$HERE/usr/lib/afaq-browser/afaq" "$@"
+APPRUN
+chmod +x "$APPDIR/AppRun"
+
+cat > "$APPDIR/afaq-browser.desktop" <<DESKTOP
+[Desktop Entry]
+Type=Application
+Name=Afaq Browser
+GenericName=Web Browser
+Comment=Private and hardened web browser
+Exec=afaq-browser %u
+Icon=afaq-browser
+Terminal=false
+Categories=Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+DESKTOP
+cp "$APPDIR/afaq-browser.desktop" "$APPDIR/usr/share/applications/afaq-browser.desktop"
+
+ln -s ../lib/afaq-browser/afaq "$APPDIR/usr/bin/afaq-browser"
+
+if command -v appimagetool >/dev/null 2>&1; then
+  appimagetool "$APPDIR" "$OUT"
+else
+  "$APPIMAGETOOL" "$APPDIR" "$OUT"
+fi
+
+du -h "$OUT"

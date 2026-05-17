@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.afaq.browser</id>
+  <launchable type="desktop-id">afaq.desktop</launchable>
+  <name>Afaq Browser</name>
+  <developer_name>Afaq Browser</developer_name>
+  <summary>Privacy-hardened desktop browser</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MPL-2.0</project_license>
+  <description>
+    <p>Afaq Browser is a privacy-hardened desktop browser built on Firefox ESR. It focuses on auditable privacy defaults, anti-fingerprinting measures, and controlled usability tradeoffs without claiming network anonymity.</p>
+  </description>
+  <releases>
+	<release version="$VERSION" date="$DATE"/>
+  </releases>
+  <keywords>
+    <keyword>privacy</keyword>
+    <keyword>internet</keyword>
+    <keyword>web</keyword>
+  </keywords>
+  <content_rating type="oars-1.1" />
+</component>
