@@ -1,5 +1,9 @@
 # Afaq Browser
 
+<img width="1411" height="991" alt="Screenshot_20260517_220135" src="https://github.com/user-attachments/assets/e5254f0c-0c7d-4cf1-be20-8cfea1a2720a" />
+
+
+
 Afaq Browser is a privacy-focused desktop browser built on the Firefox source tree. It is designed for users who want strong anti-tracking defaults, practical fingerprinting resistance, controlled site-data cleanup, and a clean daily browsing experience without claiming Tor-style anonymity.
 
 The project goal is to compete with serious privacy browsers such as Mullvad Browser and Tor Browser in the areas that matter most for everyday use: predictable defaults, a shared browser fingerprint, auditable hardening, minimal telemetry, and clear compatibility tradeoffs.
